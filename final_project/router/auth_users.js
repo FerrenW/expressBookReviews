@@ -6,7 +6,7 @@ const regd_users = express.Router();
 let users = [];
 
 const isValid = (username)=>{ //returns boolean
-//write code to check is the username is valid
+    return username.lenght > 0
 }
 
 const authenticatedUser = (username,password)=>{ //returns boolean
@@ -15,13 +15,32 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!username || !password) {
+        return res.status(404).json({message: "Error logging in"});
+    }else
+    return res.status(200).send("User successfully logged in");
+    
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
+  const isbn = req.params.isbn;
+  const reviewText = req.body.review;
+  if (!reviewText) {
+    return res.status(404).json({message: "Missing review text"});
+  }
+
+  const reviews = books[isbn].reviews;
+  let userReview = reviews[username];
+  if (userReview) {
+    reviews[username] = reviewText;
+    return res.status(200).send("Review successfully updated.");
+  } else {
+    reviews[username] =  reviewText;
+    return res.status(200).send("Review successfully created.");
+  }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
